@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Score
 {
     public class ScoreView : MonoBehaviour
     {

@@ -1,80 +1,70 @@
-﻿using DefaultNamespace.FX;
+﻿using Audio;
+using Events;
+using Player;
+using Score;
 using SimpleEventBus;
+using Square;
 using UnityEngine;
 
-namespace DefaultNamespace
+public class GameController : MonoBehaviour
 {
-    //  TODO получение очков, 3. уменьшение очков  4. звук обновления BestScore
-    public class GameController : MonoBehaviour
+    [SerializeField] private ScoreManager _scoreManager;
+    [SerializeField] private PlayerController _playerController;
+    [SerializeField] private ScoreView _scoreView;
+    [SerializeField] private SquareManager _squareManager;
+
+    private void Awake()
     {
-        [SerializeField] private ScoreManager _scoreManager;
-        [SerializeField] private PlayerController _playerController;
-        [SerializeField] private ScoreView _scoreView;
-        [SerializeField] private SquareManager _squareManager;
 
-        private void Awake()
+        _playerController.Initialize();
+        _squareManager.Initialize();
+        _scoreManager.Initialize();
+        _scoreManager.ScoreChanged += OnScoreChanged;
+        _playerController.SquareIsCatched += OnSquareIsCatched;
+
+    }
+
+    private void OnScoreChanged(int score)
+    {
+        _scoreView.UpdateScoreView(score);
+        if (IsGameOver(score))
         {
-
-            _playerController.Initialize();
-            _squareManager.Initialize();
-            _scoreManager.Initialize();
-            _scoreManager.ScoreChanged += OnScoreChanged;
-            _playerController.SquareIsCatched += OnSquareIsCatched;
-
+            GameOver();
         }
 
-        private void OnScoreChanged(int score)
-        {
-            _scoreView.UpdateScoreView(score);
-            if (IsGameOver(score))
-            {
-                GameOver();
-            }
+    }
 
-        }
-
-        private void OnSquareIsCatched(Square square)
+    private void OnSquareIsCatched(Square.Square square)
+    {
+        _squareManager.ReturnSquareToPool(square);
+        _scoreManager.ChangeScore(square.RewardSquarePoint);
+        if (square.RewardSquarePoint > 0)
         {
-            _squareManager.ReturnSquareToPool(square);
-            _scoreManager.ChangeScore(square.RewardSquarePoint);
-            if (square.RewardSquarePoint > 0)
-            {
-                PlayIncreaseScoreSound();
-            }
-            else
-            {
-                PlayDecreaseScoreSound();
-            }
+            SoundPlayer.Instance.PlayIncreaseScoreSound();
         }
-
-        private void PlayIncreaseScoreSound()
+        else
         {
-            var increaseScoreSound = GameFXHandler.Instance.AudioClipsProvider.PlayerTookPoint;
-            GameFXHandler.Instance.PlayAudioEffect(increaseScoreSound);
+            SoundPlayer.Instance.PlayDecreaseScoreSound();
         }
+    }
 
-        private void PlayDecreaseScoreSound()
-        {
-            var decreaseScoreSound = GameFXHandler.Instance.AudioClipsProvider.PlayerLostPoint;
-            GameFXHandler.Instance.PlayAudioEffect(decreaseScoreSound);
-        }
+       
 
-        private void GameOver()
-        {
-            _playerController.DestroyPlayer();
-            EventStreams.EventBus.Publish<GameOverEvent>(new());
-        }
+    private void GameOver()
+    {
+        _playerController.DestroyPlayer();
+        EventStreams.EventBus.Publish<GameOverEvent>(new());
+    }
 
-        private bool IsGameOver(int currentScore)
-        {
-            return currentScore <= 0;
-        }
+    private bool IsGameOver(int currentScore)
+    {
+        return currentScore <= 0;
+    }
 
-        private void OnDestroy()
-        {
-            _playerController.SquareIsCatched -= OnSquareIsCatched;
-            _scoreManager.ScoreChanged -= OnScoreChanged;
-            _squareManager.Dispose();
-        }
+    private void OnDestroy()
+    {
+        _playerController.SquareIsCatched -= OnSquareIsCatched;
+        _scoreManager.ScoreChanged -= OnScoreChanged;
+        _squareManager.Dispose();
     }
 }

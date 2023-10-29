@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Square
 {
     [Serializable]
     public class SquareSettingsProvider 

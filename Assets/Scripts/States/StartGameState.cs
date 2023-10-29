@@ -4,7 +4,7 @@ using SimpleEventBus.Disposables;
 using UnityEngine.SceneManagement;
 using static GlobalConstants;
 
-namespace DefaultNamespace
+namespace States
 {
     public class StartGameState : IState
 

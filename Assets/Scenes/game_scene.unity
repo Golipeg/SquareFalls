@@ -168,7 +168,6 @@ GameObject:
   - component: {fileID: 381922229}
   - component: {fileID: 381922231}
   - component: {fileID: 381922232}
-  - component: {fileID: 381922235}
   - component: {fileID: 381922234}
   m_Layer: 0
   m_Name: Player
@@ -256,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c594f56c5e4b2145b134ea299286f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deathEffect: {fileID: 668977754387144313, guid: d8214c2bcf275ef4f97ae1e9d4d88e06, type: 3}
 --- !u!114 &381922230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,20 +395,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &381922235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381922226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3b696c8fcb94ddbbbe6e02ceb9f609b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioClipsProvider: {fileID: 11400000, guid: 6ca6fb3f15fd654419a8d2b241afa5b5, type: 2}
-  _deathEffect: {fileID: 668977754387144313, guid: d8214c2bcf275ef4f97ae1e9d4d88e06, type: 3}
 --- !u!1 &491710670
 GameObject:
   m_ObjectHideFlags: 0

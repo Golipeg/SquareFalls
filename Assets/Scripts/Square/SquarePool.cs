@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Square
 {
     public class SquarePool
     {

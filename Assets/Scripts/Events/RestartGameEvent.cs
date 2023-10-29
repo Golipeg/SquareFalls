@@ -1,6 +1,6 @@
 ﻿using SimpleEventBus.Events;
 
-namespace DefaultNamespace
+namespace Events
 {
     public class RestartGameEvent:EventBase
 

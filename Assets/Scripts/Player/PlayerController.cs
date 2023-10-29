@@ -1,63 +1,72 @@
 using System;
-using DefaultNamespace.FX;
+using Audio;
 using DG.Tweening;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace Player
 {
-
-    public event Action<Square> SquareIsCatched;
-    private PlayerMovementHandler _playerMovementHandler;
-    private PlayerInputHandler _playerInputHandler;
-
-    public void Initialize()
+    public class PlayerController : MonoBehaviour
     {
-        _playerInputHandler = GetComponent<PlayerInputHandler>();
-        _playerMovementHandler = GetComponent<PlayerMovementHandler>();
-        _playerMovementHandler.Initialize();
-        
-        _playerInputHandler.DirectionIsChanged += _playerMovementHandler.ChangeDirection;
-        _playerInputHandler.DirectionIsChanged += PlayChangeDirectionSound;
-        AnimatePlayerSpawn();
-    }
+        public event Action<Square.Square> SquareIsCatched;
+        [SerializeField] private ParticleSystem _deathEffect;
+        private PlayerMovementHandler _playerMovementHandler;
+        private PlayerInputHandler _playerInputHandler;
 
-    private void AnimatePlayerSpawn()
-    {
-        var startScale = transform.localScale;
-        transform.localScale = Vector3.zero;
-        transform.DOScale(startScale, 0.4f);
-    }
-
-    private void PlayChangeDirectionSound()
-    {
-        var changeDirectionSound = GameFXHandler.Instance.AudioClipsProvider.ChangeDirectionSound;
-        GameFXHandler.Instance.PlayAudioEffect(changeDirectionSound);
-    }
-
-    public void DestroyPlayer()
-    {
-        GameFXHandler.Instance.PlayDeathAnimation();
-        Destroy(gameObject);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.TryGetComponent(out Square square))
+        public void Initialize()
         {
-            SquareIsCatched?.Invoke(square);
-
+            _playerInputHandler = GetComponent<PlayerInputHandler>();
+            _playerMovementHandler = GetComponent<PlayerMovementHandler>();
+            _playerMovementHandler.Initialize();
+        
+            _playerInputHandler.DirectionIsChanged += _playerMovementHandler.ChangeDirection;
+            _playerInputHandler.DirectionIsChanged += PlayChangeDirectionSound;
+            AnimatePlayerSpawn();
         }
-    }
-    void Update()
-    {
-        _playerMovementHandler.Move();
-    }
+
+        private void AnimatePlayerSpawn()
+        {
+            var startScale = transform.localScale;
+            transform.localScale = Vector3.zero;
+            transform.DOScale(startScale, 0.4f);
+        }
+
+        private void PlayChangeDirectionSound()
+        {
+            SoundPlayer.Instance.PlayPlayerMoveSound();
+        }
+
+        public void DestroyPlayer()
+        {
+            SoundPlayer.Instance.PlayPlayerDeathSound();
+            var fx = Instantiate(_deathEffect, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (collider.gameObject.TryGetComponent(out Square.Square square))
+            {
+                if (square.IsUsed)
+                {
+                    return;
+                }
+                SquareIsCatched?.Invoke(square);
+                square.IsUsed = true;
+                
+
+            }
+        }
+        void Update()
+        {
+            _playerMovementHandler.Move();
+        }
 
 
 
-    private void OnDestroy()
-    {
-        _playerInputHandler.DirectionIsChanged -= _playerMovementHandler.ChangeDirection;
-        _playerInputHandler.DirectionIsChanged -= PlayChangeDirectionSound;
+        private void OnDestroy()
+        {
+            _playerInputHandler.DirectionIsChanged -= _playerMovementHandler.ChangeDirection;
+            _playerInputHandler.DirectionIsChanged -= PlayChangeDirectionSound;
+        }
     }
 }

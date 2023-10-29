@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace
+namespace Square
 {
     [CreateAssetMenu(fileName = "SquareSettings", menuName = "SquareSettings")]
     public class SquareSettings : ScriptableObject

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Events;
 using IngameStateMachine;
 using SimpleEventBus;
 using SimpleEventBus.Disposables;
@@ -6,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static GlobalConstants;
 
-namespace DefaultNamespace
+namespace States
 {
     public class GameState:IState
 

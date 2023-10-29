@@ -1,14 +1,17 @@
 using System;
 using UnityEngine;
 
-public class PlayerInputHandler : MonoBehaviour
+namespace Player
 {
-    public event Action DirectionIsChanged;
-    private void Update()
+    public class PlayerInputHandler : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        public event Action DirectionIsChanged;
+        private void Update()
         {
-           DirectionIsChanged?.Invoke(); 
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                DirectionIsChanged?.Invoke(); 
+            }
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿namespace DefaultNamespace
+﻿public enum UnitSide
 {
-    public enum UnitSide
-    {
-        Enemy,
-        Ally
-    }
+    Enemy,
+    Ally
 }

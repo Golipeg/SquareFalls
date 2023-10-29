@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace States
 {
     public interface ICoroutineRunner
     {

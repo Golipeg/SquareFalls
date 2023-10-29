@@ -1,6 +1,6 @@
 ﻿using SimpleEventBus.Events;
 
-namespace DefaultNamespace
+namespace States
 {
     public class StartGameEvent:EventBase
 

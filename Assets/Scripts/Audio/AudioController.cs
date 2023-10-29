@@ -1,13 +1,13 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 using static GlobalConstants;
 
-namespace DefaultNamespace
+namespace Audio
 {
     public class AudioController : MonoBehaviour
     {
+
         [SerializeField] private Image _soundImage;
         [SerializeField] private Sprite _activeSoundSprite;
         [SerializeField] private Sprite _unactiveSoundSprite;
@@ -15,9 +15,10 @@ namespace DefaultNamespace
 
         private void Awake()
         {
-            _soundVolume= PlayerPrefs.GetInt(SOUND_ENABLE, 1);
+
+            _soundVolume = PlayerPrefs.GetInt(SOUND_ENABLE, 1);
             SetSoundVolume();
-            
+
         }
 
         private void SetSoundVolume()
@@ -25,6 +26,7 @@ namespace DefaultNamespace
             AudioListener.volume = _soundVolume;
             _soundImage.sprite = _soundVolume == 1 ? _activeSoundSprite : _unactiveSoundSprite;
         }
+
         [UsedImplicitly]
         public void ChangeSoundVolume()
         {
@@ -35,7 +37,7 @@ namespace DefaultNamespace
         }
 
         private void SaveSoundVolume()
-        { 
+        {
             PlayerPrefs.SetInt(SOUND_ENABLE, _soundVolume);
             PlayerPrefs.Save();
         }

@@ -1,9 +1,9 @@
-using System;
-using DefaultNamespace;
+using Audio;
+using DG.Tweening;
+using Events;
 using SimpleEventBus;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameOverScene : MonoBehaviour
@@ -17,7 +17,9 @@ public class GameOverScene : MonoBehaviour
         _restartButton.onClick.AddListener(()=>EventStreams.EventBus.Publish(new RestartGameEvent()));
         _exitGameButton.onClick.AddListener(()=>EventStreams.EventBus.Publish(new ExitGameEvent()));
         ShowBestScore();
+      
     }
+    
 
     private void OnDestroy()
     {
@@ -28,7 +30,13 @@ public class GameOverScene : MonoBehaviour
     private void ShowBestScore()
     {
        var bestScore= PlayerPrefs.GetInt(GlobalConstants.BEST_SCORE_KEY);
-       _bestScoreLabel.text = $"BEST SCORE :{bestScore}";
-
+       _bestScoreLabel.text = $"BEST SCORE {bestScore}";
+       bool isBestScoreChanged = PlayerPrefs.GetInt(GlobalConstants.IS_BEST_SCORE_CHANGED_KEY)==1;
+      
+       if (isBestScoreChanged)
+       {
+           SoundPlayer.Instance.PlayBestScoreChangedSound();
+           _bestScoreLabel.transform.DOPunchScale(Vector3.one*1.2f, 0.3f);
+       }
     }
 }
